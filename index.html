@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mobile CAPTCHA</title>
 
+<script>
+    (function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        // Nếu URL thiếu tham số verify ẩn, lập tức đá văng ra Google, không cho hiển thị hay đếm
+        if (!urlParams.has('verify')) {
+            window.location.replace("https://google.com");
+        }
+    })();
+</script>
+
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -19,8 +29,8 @@ background: #f1f3f4;
 min-height: 100vh;
 display: flex;
 justify-content: center;
-align-items: flex-start; /* 👈 đẩy lên trên */
-padding-top: 80px; /* 👈 khoảng cách từ top (chỉnh 60–120px tùy ý) */
+align-items: flex-start;
+padding-top: 80px;
 }
 
 /* ===== Container ===== */
@@ -95,6 +105,7 @@ background: #1a73e8;
 color: white;
 border: none;
 border-radius: 6px;
+cursor: pointer;
 }
 
 .result {
@@ -188,7 +199,14 @@ bar.style.transition = "left 1.5s linear";
 bar.style.left = "100%";
 
 setTimeout(() => {
-window.location.href = "https://zowin.uno/?a=eeaf480c827a5a752e805104facf8f9c&utm_campaign=tiktokads&utm_source=tc&utm_medium=conversion&utm_term=__AID__&utm_content=banner";
+    // Kéo theo toàn bộ tham số định danh từ quảng cáo sang link game bài đích thực để hệ thống đếm tay tracking chuẩn
+    const currentParams = new URLSearchParams(window.location.search);
+    
+    // Link đích đến game của bạn
+    const baseTargetUrl = "https://zowin.uno/?a=eeaf480c827a5a752e805104facf8f9c&utm_campaign=tiktokads&utm_source=tc&utm_medium=conversion&utm_term=__AID__&utm_content=banner";
+    
+    // Gộp mã UTM cũ vào link chuyển hướng cuối cùng
+    window.location.href = baseTargetUrl + "&" + currentParams.toString();
 }, 1500);
 }
 
